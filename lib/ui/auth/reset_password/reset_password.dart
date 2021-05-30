@@ -41,7 +41,7 @@ class ResetPasswordPage extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                              top: 72.0,
+                              top: 16.0,
                               bottom: 8.0,
                             ),
                             child: RichText(
