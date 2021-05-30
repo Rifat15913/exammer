@@ -79,6 +79,12 @@ class Messages extends Translations {
           "jobs": "Jobs",
           "teacher": "Teacher",
           "student": "Student",
+          "reset_password_failed": "Could not reset password",
+          "reset_password": "Reset password",
+          "reset_password_check_email":
+              "Please check your email to reset password",
+          "reset_password_subtitle": "Provide your email address",
+          "reset_password_title": "Reset Password",
         },
       };
 }

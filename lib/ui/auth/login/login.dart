@@ -2,6 +2,7 @@ import 'package:exammer/common.dart';
 import 'package:exammer/constants.dart';
 import 'package:exammer/ui/auth/login/login_controller.dart';
 import 'package:exammer/ui/auth/registration/registration.dart';
+import 'package:exammer/ui/auth/reset_password/reset_password.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -64,14 +65,16 @@ class LoginPage extends StatelessWidget {
                             hint: 'password'.tr,
                             inputType: TextInputType.visiblePassword,
                           ),
-/*                          SizedBox(
+                          SizedBox(
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 right: 32.0,
                               ),
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.to(() => ResetPasswordPage());
+                                },
                                 child: Text(
                                   'forgot_password'.tr,
                                   textAlign: TextAlign.end,
@@ -79,7 +82,7 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ),*/
+                          ),
                           SizedBox(
                             height: 16.0,
                           ),
@@ -110,63 +113,6 @@ class LoginPage extends StatelessWidget {
                               ],
                             ),
                           ),
-/*                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 32.0,
-                              right: 32.0,
-                              bottom: 16.0,
-                              top: 48.0,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Divider(
-                                    color: colorTextSecondary,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                  ),
-                                  child: Text(
-                                    'registration_or_continue_with'.tr,
-                                    style: TextStyle(
-                                      color: colorTextSecondary,
-                                      fontSize: 14.0,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Divider(
-                                    color: colorTextSecondary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 32.0,
-                              right: 32.0,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                buildSocialLoginItem(
-                                  imagePath: 'images/ic_google.png',
-                                ),
-                                buildSocialLoginItem(
-                                  imagePath: 'images/ic_facebook.png',
-                                ),
-                              ],
-                            ),
-                          ),*/
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 32.0,
@@ -228,8 +174,8 @@ class LoginPage extends StatelessWidget {
                   child: Icon(
                     // Based on passwordVisible state choose the icon
                     loginController.isPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     color: colorTextRegular,
                   ),
                   onTap: () {

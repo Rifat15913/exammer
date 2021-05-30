@@ -253,8 +253,8 @@ class RegistrationPage extends StatelessWidget {
                   child: Icon(
                     // Based on passwordVisible state choose the icon
                     registrationController.isPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     color: colorTextRegular,
                   ),
                   onTap: () {
@@ -302,8 +302,8 @@ class RegistrationPage extends StatelessWidget {
                   child: Icon(
                     // Based on passwordVisible state choose the icon
                     registrationController.isConfirmPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     color: colorTextRegular,
                   ),
                   onTap: () {
