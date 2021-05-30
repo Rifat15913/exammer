@@ -1,19 +1,20 @@
-import 'package:exammer/base/exception/app_exception.dart';
 import 'package:exammer/constants.dart';
-import 'package:exammer/data/remote/repository/remote_repository.dart';
-import 'package:exammer/ui/auth/verify/verify.dart';
 import 'package:exammer/util/helper/keyboard.dart';
 import 'package:exammer/util/helper/text.dart';
 import 'package:exammer/util/lib/toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegistrationController extends GetxController {
-  late TextEditingController nameController;
-  late TextEditingController emailPhoneController;
+  late TextEditingController emailAddressController;
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
+  late DatabaseReference _userPreferencesRef;
 
+  late int selectedType;
   late bool isPasswordVisible, isConfirmPasswordVisible, isLoading;
 
   @override
@@ -21,10 +22,23 @@ class RegistrationController extends GetxController {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false;
 
-    emailPhoneController = TextEditingController();
+    emailAddressController = TextEditingController();
     passwordController = TextEditingController();
-    nameController = TextEditingController();
     confirmPasswordController = TextEditingController();
+    selectedType = userTypeStudent;
+
+    if (kDebugMode) {
+      emailAddressController.text = "mohd.asfaqeazam@gmail.com";
+      passwordController.text = "Storm159";
+      confirmPasswordController.text = "Storm159";
+    }
+
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+
+    _userPreferencesRef =
+        FirebaseDatabase.instance.reference().child(keyUserPreferences);
+
+    _userPreferencesRef.keepSynced(true);
 
     isLoading = false;
     super.onInit();
@@ -32,10 +46,9 @@ class RegistrationController extends GetxController {
 
   @override
   void dispose() {
-    nameController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
-    emailPhoneController.dispose();
+    emailAddressController.dispose();
 
     super.dispose();
   }
@@ -50,23 +63,25 @@ class RegistrationController extends GetxController {
     update(["text_form_field_confirm_password"]);
   }
 
+  void toggleType(int type) {
+    selectedType = type;
+    update(["user_type"]);
+  }
+
   bool _validateData() {
     if (Get.context != null) {
       KeyboardUtil.hideKeyboard(Get.context!);
     }
 
-    if (!TextUtil.isNotEmpty(emailPhoneController.text) ||
+    if (!TextUtil.isNotEmpty(emailAddressController.text) ||
         !TextUtil.isNotEmpty(passwordController.text) ||
         !TextUtil.isNotEmpty(confirmPasswordController.text)) {
       ToastUtil.show('fill_up_all_fields'.tr);
       return false;
     } else if (!(RegExp(regularExpressionEmail).hasMatch(
-          emailPhoneController.text.trim(),
-        ) ||
-        RegExp(regularExpressionPhone).hasMatch(
-          emailPhoneController.text.trim(),
-        ))) {
-      ToastUtil.show('valid_email_phone_required'.tr);
+      emailAddressController.text.trim(),
+    ))) {
+      ToastUtil.show('valid_email_required'.tr);
       return false;
     } else if (passwordController.text.trim() !=
         confirmPasswordController.text.trim()) {
@@ -86,33 +101,50 @@ class RegistrationController extends GetxController {
       update(["body"]);
 
       try {
-        final response = await RemoteRepository.on().register(
-          emailPhone: emailPhoneController.text.trim(),
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailAddressController.text.trim(),
           password: passwordController.text.trim(),
         );
 
-        if (response.isSuccessful) {
-          emailPhoneController.clear();
-          passwordController.clear();
+        if (userCredential.user != null) {
+          final user = userCredential.user;
 
-          Get.to(
-            () => VerificationPage(
-              emailPhone: emailPhoneController.text.trim(),
-            ),
+          await _userPreferencesRef.child(user!.uid).set(
+            <String, int>{
+              keyUserType: selectedType,
+            },
           );
-        } else {
-          if (TextUtil.isNotEmpty(response.message)) {
-            ToastUtil.show(response.message);
+
+          if (!(user.emailVerified)) {
+            await user.sendEmailVerification();
+            ToastUtil.show('registration_verification'.tr);
           } else {
-            ToastUtil.show('registration_error'.tr);
+            ToastUtil.show('registration_successful'.tr);
           }
+
+          isLoading = false;
+          update(["body"]);
+          Get.back();
+        } else {
+          isLoading = false;
+          update(["body"]);
+          ToastUtil.show('registration_error'.tr);
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == authErrorTypeWeakPassword) {
+          ToastUtil.show('weak_password'.tr);
+        } else if (e.code == authErrorTypeDuplicateEmail) {
+          ToastUtil.show('duplicate_email'.tr);
         }
 
         isLoading = false;
         update(["body"]);
       } catch (e) {
-        if (e is AppException) {
-          ToastUtil.show(e.toString());
+        print(e);
+
+        if (TextUtil.isNotEmpty(e.toString())) {
+          ToastUtil.show(e.toString().trim());
         } else {
           ToastUtil.show('registration_error'.tr);
         }

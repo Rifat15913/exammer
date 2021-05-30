@@ -250,6 +250,10 @@ const String responseOfJsonType = "application/json";
 const int minimumPasswordLength = 8;
 const int minimumVerificationCodeLength = 4;
 const String prefixAuthToken = "Bearer ";
+const String authErrorTypeWeakPassword = "weak-password";
+const String authErrorTypeDuplicateEmail = "email-already-in-use";
+const int userTypeStudent = 1;
+const int userTypeTeacher = 2;
 
 // Backend
 const String baseDevelopmentUrl = "http://staging.exammer.top";
@@ -284,6 +288,8 @@ const String keyTrainingCategory = "training_category";
 const String keyTimeLength = "time_length";
 const String keyProfession = "profession";
 const String keyVerificationCode = "verification_code";
+const String keyUserType = "user_type";
+const String keyUserPreferences = "user_preferences";
 
 // Regular Expression
 const String regularExpressionEmail =

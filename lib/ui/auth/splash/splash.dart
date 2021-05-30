@@ -36,6 +36,12 @@ class SplashScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Image.asset(
+          "images/ic_uap_logo.png",
+          height: 100.0,
+          fit: BoxFit.contain,
+        ),
+        SizedBox(height: 24.0),
         Text(
           'splash_title'.tr,
           style: TextStyle(

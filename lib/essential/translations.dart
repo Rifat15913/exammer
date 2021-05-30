@@ -27,26 +27,30 @@ class Messages extends Translations {
           "invalid_phone": "Invalid phone number found",
           "fill_up_all_fields": "Please fill up all the fields",
           "fill_up_the_field": "Please fill up the field",
+          "valid_email_required": "Please enter a valid email address",
           "valid_email_phone_required": "Please enter a valid email/phone",
           "passwords_do_not_match": "Passwords do not match",
           "code_length_required":
               "Verification code should contain $minimumVerificationCodeLength characters",
           "minimum_password_length_required":
               "Password should contain at least $minimumPasswordLength characters",
+          "weak_password": "The password provided is too weak.",
+          "duplicate_email": "The account already exists for that email.",
           "splash_title": "Exammer",
           "registration_title": "Create an account",
           "registration_subtitle":
-              "Sign up with your email and password or social media to continue",
+              "Sign up with your email and password to continue",
           "registration_get_started": "Get started",
           "registration_already_have_account": "Already have an account? ",
           "registration_or_continue_with": "Or Continue with",
           "registration_you_agree_to_our_policy":
               "By signing up, you agree to our ",
           "registration_error": "Failed to register",
-          "login_title_part_1": "Welcome, ",
-          "login_title_part_2": "Tekkans!",
-          "login_subtitle":
-              "Sign in with your email and password or social media to continue",
+          "registration_verification":
+              "Please check your email to verify your account",
+          "registration_successful": "Registration successful",
+          "login_title_part_1": "Welcome",
+          "login_subtitle": "Sign in with your email and password to continue",
           "login_do_not_have_account": "Don't have an account? ",
           "login_register": "Register",
           "login_you_agree_to_our_policy": "By signing in, you agree to our ",
@@ -73,6 +77,8 @@ class Messages extends Translations {
           "competition": "Competition",
           "courses": "Courses",
           "jobs": "Jobs",
+          "teacher": "Teacher",
+          "student": "Student",
         },
       };
 }

@@ -37,16 +37,6 @@ class LoginPage extends StatelessWidget {
                               text: TextSpan(
                                 text: 'login_title_part_1'.tr,
                                 style: textStylePageTitle,
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {},
-                                    text: 'login_title_part_2'.tr,
-                                    style: textStylePageTitle.copyWith(
-                                      color: colorAccent,
-                                    ),
-                                  )
-                                ],
                               ),
                             ),
                           ),
@@ -65,8 +55,8 @@ class LoginPage extends StatelessWidget {
                             ),
                           ),
                           buildTextFormField(
-                            controller: viewController.emailPhoneController,
-                            hint: 'email_phone'.tr,
+                            controller: viewController.emailAddressController,
+                            hint: 'email_address'.tr,
                             inputType: TextInputType.emailAddress,
                           ),
                           buildPasswordField(
@@ -74,7 +64,7 @@ class LoginPage extends StatelessWidget {
                             hint: 'password'.tr,
                             inputType: TextInputType.visiblePassword,
                           ),
-                          SizedBox(
+/*                          SizedBox(
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -89,7 +79,7 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ),
+                          ),*/
                           SizedBox(
                             height: 16.0,
                           ),
@@ -120,7 +110,7 @@ class LoginPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
+/*                          Padding(
                             padding: const EdgeInsets.only(
                               left: 32.0,
                               right: 32.0,
@@ -176,13 +166,13 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),
+                          ),*/
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 32.0,
                               right: 32.0,
                               bottom: 32.0,
-                              top: 16.0,
+                              top: 48.0,
                             ),
                             child: RichText(
                               text: TextSpan(

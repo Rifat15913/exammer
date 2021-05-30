@@ -1,18 +1,18 @@
-import 'package:exammer/base/exception/app_exception.dart';
 import 'package:exammer/constants.dart';
-import 'package:exammer/data/remote/repository/remote_repository.dart';
-import 'package:exammer/ui/preferences/introduction/introduction.dart';
 import 'package:exammer/util/helper/keyboard.dart';
 import 'package:exammer/util/helper/text.dart';
-import 'package:exammer/util/lib/preference.dart';
 import 'package:exammer/util/lib/toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  late TextEditingController emailPhoneController;
+  late TextEditingController emailAddressController;
   late TextEditingController passwordController;
+  late DatabaseReference _userPreferencesRef;
+
   late bool isLoading;
   late bool isPasswordVisible;
 
@@ -21,13 +21,16 @@ class LoginController extends GetxController {
     super.onInit();
     isPasswordVisible = false;
 
-    emailPhoneController = TextEditingController();
+    emailAddressController = TextEditingController();
     passwordController = TextEditingController();
 
     if (kDebugMode) {
-      emailPhoneController.text = "a@a.com";
-      passwordController.text = "11111111";
+      emailAddressController.text = "mohd.asfaqeazam@gmail.com";
+      passwordController.text = "Storm159";
     }
+
+    _userPreferencesRef =
+        FirebaseDatabase.instance.reference().child(keyUserPreferences);
 
     isLoading = false;
   }
@@ -35,7 +38,7 @@ class LoginController extends GetxController {
   @override
   void dispose() {
     passwordController.dispose();
-    emailPhoneController.dispose();
+    emailAddressController.dispose();
     super.dispose();
   }
 
@@ -49,17 +52,14 @@ class LoginController extends GetxController {
       KeyboardUtil.hideKeyboard(Get.context!);
     }
 
-    if (!TextUtil.isNotEmpty(emailPhoneController.text) ||
+    if (!TextUtil.isNotEmpty(emailAddressController.text) ||
         !TextUtil.isNotEmpty(passwordController.text)) {
       ToastUtil.show('fill_up_all_fields'.tr);
       return false;
     } else if (!(RegExp(regularExpressionEmail).hasMatch(
-          emailPhoneController.text.trim(),
-        ) ||
-        RegExp(regularExpressionPhone).hasMatch(
-          emailPhoneController.text.trim(),
-        ))) {
-      ToastUtil.show('valid_email_phone_required'.tr);
+      emailAddressController.text.trim(),
+    ))) {
+      ToastUtil.show('valid_email_required'.tr);
       return false;
     } else if (passwordController.text.trim().length < minimumPasswordLength) {
       ToastUtil.show('minimum_password_length_required'.tr);
@@ -75,40 +75,42 @@ class LoginController extends GetxController {
       update(["body"]);
 
       try {
-        final response = await RemoteRepository.on().login(
-          emailPhoneController.text.trim(),
-          passwordController.text.trim(),
+        final credential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailAddressController.text.trim(),
+          password: passwordController.text.trim(),
         );
-
-        if (response.isSuccessful) {
-          emailPhoneController.clear();
-          passwordController.clear();
-
-          PreferenceUtil.on.write<String>(
-            keyAuthToken,
-            (prefixAuthToken + response.token),
-          );
-
-          Get.offAll(() => IntroductionPage());
-        } else {
-          if (TextUtil.isNotEmpty(response.message)) {
-            ToastUtil.show(response.message);
-          } else {
-            ToastUtil.show('login_error'.tr);
-          }
-        }
 
         isLoading = false;
         update(["body"]);
-      } catch (e) {
-        if (e is AppException) {
-          ToastUtil.show(e.toString());
+
+        if (credential.user != null) {
+          // TODO: Visit homepage according to user type
+          _userPreferencesRef
+              .child(credential.user!.uid)
+              .child(keyUserType)
+              .once()
+              .then(
+            (DataSnapshot snapshot) {
+              if (snapshot.value != null) {
+                if ((snapshot.value as int) == userTypeStudent) {
+                  ToastUtil.show("Student");
+                } else {
+                  ToastUtil.show("Teacher");
+                }
+              } else {
+                ToastUtil.show('login_error'.tr);
+              }
+            },
+          );
         } else {
           ToastUtil.show('login_error'.tr);
         }
-
+      } catch (e) {
         isLoading = false;
         update(["body"]);
+
+        ToastUtil.show('login_error'.tr);
       }
     }
   }

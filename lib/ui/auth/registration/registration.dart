@@ -68,31 +68,9 @@ class RegistrationPage extends StatelessWidget {
                               maxLines: 3,
                             ),
                           ),
-/*                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 32.0,
-                              vertical: 8.0,
-                            ),
-                            child: CircleAvatar(
-                              radius: 38,
-                              backgroundColor: colorPrimary,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 35,
-                                backgroundImage: AssetImage(
-                                  'images/ic_user_avatar.png',
-                                ),
-                              ),
-                            ),
-                          ),*/
-/*                          buildTextFormField(
-                            controller: registrationController.nameController,
-                            hint: 'name'.tr,
-                            inputType: TextInputType.text,
-                          ),*/
                           buildTextFormField(
-                            controller: viewController.emailPhoneController,
-                            hint: 'email_phone'.tr,
+                            controller: viewController.emailAddressController,
+                            hint: 'email_address'.tr,
                             inputType: TextInputType.emailAddress,
                           ),
                           buildPasswordField(
@@ -106,6 +84,7 @@ class RegistrationPage extends StatelessWidget {
                             hint: 'confirm_password'.tr,
                             inputType: TextInputType.visiblePassword,
                           ),
+                          buildUserTypeSelectionSegment(),
                           SizedBox(
                             height: 16.0,
                           ),
@@ -115,6 +94,9 @@ class RegistrationPage extends StatelessWidget {
                             },
                             backgroundColor: colorPrimary,
                             title: 'registration_get_started'.tr,
+                          ),
+                          SizedBox(
+                            height: 16.0,
                           ),
                           RichText(
                             text: TextSpan(
@@ -141,62 +123,8 @@ class RegistrationPage extends StatelessWidget {
                             padding: const EdgeInsets.only(
                               left: 32.0,
                               right: 32.0,
-                              bottom: 16.0,
-                              top: 32.0,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Divider(
-                                    color: colorTextSecondary,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                  ),
-                                  child: Text(
-                                    'registration_or_continue_with'.tr,
-                                    style: textStyleCaption1.copyWith(
-                                      fontSize: 14.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Divider(
-                                    color: colorTextSecondary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 32.0,
-                              right: 32.0,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                buildSocialLoginItem(
-                                  imagePath: 'images/ic_google.png',
-                                ),
-                                buildSocialLoginItem(
-                                  imagePath: 'images/ic_facebook.png',
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 32.0,
-                              right: 32.0,
                               bottom: 32.0,
-                              top: 16.0,
+                              top: 48.0,
                             ),
                             child: RichText(
                               text: TextSpan(
@@ -219,6 +147,78 @@ class RegistrationPage extends StatelessWidget {
                     ),
                   );
           },
+        ),
+      ),
+    );
+  }
+
+  GetBuilder<RegistrationController> buildUserTypeSelectionSegment() {
+    return GetBuilder<RegistrationController>(
+      id: "user_type",
+      init: RegistrationController(),
+      builder: (RegistrationController viewController) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildUserTypeItem(
+                () {
+                  if (viewController.selectedType != userTypeStudent) {
+                    viewController.toggleType(userTypeStudent);
+                  }
+                },
+                viewController.selectedType == userTypeStudent,
+                'student'.tr,
+              ),
+              SizedBox(width: 16.0),
+              buildUserTypeItem(
+                () {
+                  if (viewController.selectedType != userTypeTeacher) {
+                    viewController.toggleType(userTypeTeacher);
+                  }
+                },
+                viewController.selectedType == userTypeTeacher,
+                'teacher'.tr,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Expanded buildUserTypeItem(
+    GestureTapCallback onTap,
+    bool selectingCondition,
+    String title,
+  ) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          child: Center(
+            child: Text(
+              title,
+              style: textStyleSectionSubtitle.copyWith(
+                color: selectingCondition ? Colors.white : colorTextTertiary,
+                fontWeight: FontWeight.w400,
+                fontSize: 14.0,
+              ),
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: selectingCondition
+                ? colorAccent
+                : colorTextSecondary.withOpacity(0.15),
+          ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+          ),
         ),
       ),
     );
