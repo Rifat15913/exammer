@@ -2,6 +2,7 @@ import 'package:exammer/common.dart';
 import 'package:exammer/constants.dart';
 import 'package:exammer/data/remote/model/quiz/quiz.dart';
 import 'package:exammer/ui/quiz/list/quiz_list_controller.dart';
+import 'package:exammer/ui/quiz/view/quiz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -65,7 +66,11 @@ class QuizListPage extends StatelessWidget {
 
   Widget buildItem(int index, Quiz item) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.to(
+          () => QuizPage(quiz: item),
+        );
+      },
       child: Card(
         shape: shapeCardItemRectangle,
         child: Container(
