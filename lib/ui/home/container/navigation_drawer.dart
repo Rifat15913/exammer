@@ -1,11 +1,14 @@
 import 'package:exammer/common.dart';
 import 'package:exammer/constants.dart';
+import 'package:exammer/ui/auth/login/login.dart';
 import 'package:exammer/ui/courses/enrolled/enrolled_courses.dart';
 import 'package:exammer/ui/notifications/view/notifications.dart';
 import 'package:exammer/ui/others/faqs/faqs.dart';
 import 'package:exammer/ui/referral/score/referral_score.dart';
 import 'package:exammer/ui/store/view/store.dart';
 import 'package:exammer/ui/wallet/my_account/my_account.dart';
+import 'package:exammer/util/lib/preference.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -119,8 +122,10 @@ class NavigationDrawer extends StatelessWidget {
                 child: NavigationDrawerItem(
                   title: "Log out",
                   imagePath: 'images/ic_sign_out.png',
-                  onTapCallback: () {
-                    Get.back();
+                  onTapCallback: () async {
+                    FirebaseAuth.instance.signOut();
+                    PreferenceUtil.on.clear();
+                    Get.offAll(() => LoginPage());
                   },
                 ),
               ),

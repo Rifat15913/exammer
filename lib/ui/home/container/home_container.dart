@@ -11,6 +11,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class HomeContainerPage extends StatelessWidget {
+  HomeContainerPage({required this.userType});
+
+  final int userType;
   final GlobalKey<ScaffoldState> _keyScaffold = GlobalKey();
 
   @override

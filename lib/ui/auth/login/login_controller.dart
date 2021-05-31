@@ -1,6 +1,8 @@
 import 'package:exammer/constants.dart';
+import 'package:exammer/ui/home/container/home_container.dart';
 import 'package:exammer/util/helper/keyboard.dart';
 import 'package:exammer/util/helper/text.dart';
+import 'package:exammer/util/lib/preference.dart';
 import 'package:exammer/util/lib/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -93,11 +95,16 @@ class LoginController extends GetxController {
               .then(
             (DataSnapshot snapshot) {
               if (snapshot.value != null) {
-                if ((snapshot.value as int) == userTypeStudent) {
-                  ToastUtil.show("Student");
-                } else {
-                  ToastUtil.show("Teacher");
-                }
+                PreferenceUtil.on.write<int>(
+                  keyUserType,
+                  (snapshot.value as int),
+                );
+
+                Get.to(
+                  () => HomeContainerPage(
+                    userType: (snapshot.value as int),
+                  ),
+                );
               } else {
                 ToastUtil.show('login_error'.tr);
               }

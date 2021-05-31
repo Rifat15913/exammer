@@ -3,29 +3,21 @@ import 'dart:async';
 import 'package:exammer/constants.dart';
 import 'package:exammer/ui/auth/login/login.dart';
 import 'package:exammer/ui/home/container/home_container.dart';
-import 'package:exammer/ui/preferences/introduction/introduction.dart';
-import 'package:exammer/util/helper/text.dart';
 import 'package:exammer/util/lib/preference.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
   void goToNextPage() {
-    final isLoggedIn = TextUtil.isNotEmpty(
-      PreferenceUtil.on.read<String?>(
-        keyAuthToken,
-        defaultValue: null,
-      ),
-    );
+    final isLoggedIn = FirebaseAuth.instance.currentUser != null &&
+        PreferenceUtil.on.read<int>(keyUserType, defaultValue: -1) != -1;
 
     if (isLoggedIn) {
-      if (PreferenceUtil.on.read<bool>(
-        keySubmittedPreferences,
-        defaultValue: false,
-      )!) {
-        Get.off(() => HomeContainerPage());
-      } else {
-        Get.off(() => IntroductionPage());
-      }
+      Get.off(
+        () => HomeContainerPage(
+          userType: PreferenceUtil.on.read<int>(keyUserType)!,
+        ),
+      );
     } else {
       Get.off(() => LoginPage());
     }

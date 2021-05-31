@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:core';
 
 import 'package:get_storage/get_storage.dart';
 
@@ -19,7 +18,7 @@ class PreferenceUtil {
     return _preference.write(key, value);
   }
 
-  bool contains(String key)  {
+  bool contains(String key) {
     return _preference.hasData(key);
   }
 
@@ -27,7 +26,7 @@ class PreferenceUtil {
     return _preference.remove(key);
   }
 
-  void clear() {
-    _preference.erase();
+  Future<void> clear() async {
+    await _preference.erase();
   }
 }
