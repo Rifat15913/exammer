@@ -2,6 +2,8 @@ import 'package:exammer/constants.dart';
 import 'package:exammer/ui/auth/login/login.dart';
 import 'package:exammer/ui/home/container/home_container_controller.dart';
 import 'package:exammer/ui/quiz/add/add_quiz.dart';
+import 'package:exammer/ui/quiz/progress/progress.dart';
+import 'package:exammer/util/helper/text.dart';
 import 'package:exammer/util/lib/preference.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,8 +43,22 @@ class HomeContainerPage extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0.0,
           actions: [
+            if (userType == userTypeTeacher)
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => ProgressPage());
+                  },
+                  child: Text(
+                    "Scores",
+                    style: textStyleSectionTitle.copyWith(
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ),
+              ),
             AppBarActionItem(
-              title: "Log out",
+              title: "Exit",
               imagePath: 'images/ic_sign_out.png',
               onTapCallback: () async {
                 FirebaseAuth.instance.signOut();
@@ -156,7 +172,7 @@ class AppBarActionItem extends StatelessWidget {
     required this.onTapCallback,
   });
 
-  final String imagePath;
+  final String? imagePath;
   final String title;
   final GestureTapCallback onTapCallback;
 
@@ -172,7 +188,7 @@ class AppBarActionItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            getLeading(),
+            if (TextUtil.isNotEmpty(imagePath)) getLeading(),
             SizedBox(
               width: 8.0,
             ),
@@ -190,7 +206,7 @@ class AppBarActionItem extends StatelessWidget {
 
   Widget getLeading() {
     return Image.asset(
-      imagePath,
+      imagePath!,
       fit: BoxFit.fill,
       width: 20.0,
       height: 20.0,

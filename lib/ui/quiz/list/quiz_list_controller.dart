@@ -10,7 +10,7 @@ import '../../../constants.dart';
 
 class QuizListController extends GetxController {
   late bool isLoading;
-  late StreamSubscription<Event> _messagesSubscription;
+  late StreamSubscription<Event> _examSubscription;
   late DatabaseReference _examRef;
   late List<Quiz> quizList;
 
@@ -23,7 +23,7 @@ class QuizListController extends GetxController {
 
     _examRef.keepSynced(true);
 
-    _messagesSubscription = _examRef.onValue.listen((Event event) {
+    _examSubscription = _examRef.onValue.listen((Event event) {
       quizList.clear();
 
       event.snapshot.value.forEach(
@@ -63,7 +63,7 @@ class QuizListController extends GetxController {
 
   @override
   void dispose() {
-    _messagesSubscription.cancel();
+    _examSubscription.cancel();
     super.dispose();
   }
 }

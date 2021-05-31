@@ -1,19 +1,24 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ImprovementController extends GetxController {
+class ProgressController extends GetxController {
   late bool isLoading;
-  late ScrollController scrollController, dialogCourseScrollController;
-  late ScrollController dialogFeedbackScrollController;
+  late ScrollController scrollController;
   late String selectedTime;
+
+  late StreamSubscription<Event> _resultSubscription;
+  late DatabaseReference resultRef;
 
   @override
   void onInit() {
     isLoading = false;
     scrollController = ScrollController();
-    dialogCourseScrollController = ScrollController();
-    dialogFeedbackScrollController = ScrollController();
-    selectedTime = "Today";
+
+    resultRef = FirebaseDatabase.instance.reference().child("result");
+    resultRef.keepSynced(true);
 
     super.onInit();
   }
@@ -21,8 +26,7 @@ class ImprovementController extends GetxController {
   @override
   void dispose() {
     scrollController.dispose();
-    dialogCourseScrollController.dispose();
-    dialogFeedbackScrollController.dispose();
+    _resultSubscription.cancel();
 
     super.dispose();
   }
