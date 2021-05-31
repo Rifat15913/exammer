@@ -1,8 +1,8 @@
 import 'package:exammer/constants.dart';
 import 'package:exammer/ui/auth/login/login.dart';
 import 'package:exammer/ui/home/container/home_container_controller.dart';
+import 'package:exammer/ui/quiz/add/add_quiz.dart';
 import 'package:exammer/util/lib/preference.dart';
-import 'package:exammer/util/lib/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,9 +64,9 @@ class HomeContainerPage extends StatelessWidget {
                     ),
                     backgroundColor: colorAccent,
                     onPressed: () {
-                      ToastUtil.show("Visit Add Quiz page");
+                      Get.to(() => AddQuizPage());
                     },
-                    label: Text("Add Quiz"),
+                    label: Text("Add exam"),
                   );
                 },
               )
@@ -105,7 +105,7 @@ class HomeContainerPage extends StatelessWidget {
             getBottomBarItem(
               viewController,
               'images/ic_home.png',
-              'quiz'.tr,
+              "Exam",
               0,
             ),
             getBottomBarItem(

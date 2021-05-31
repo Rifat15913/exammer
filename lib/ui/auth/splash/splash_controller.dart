@@ -13,13 +13,13 @@ class SplashController extends GetxController {
         PreferenceUtil.on.read<int>(keyUserType, defaultValue: -1) != -1;
 
     if (isLoggedIn) {
-      Get.off(
+      Get.offAll(
         () => HomeContainerPage(
           userType: PreferenceUtil.on.read<int>(keyUserType)!,
         ),
       );
     } else {
-      Get.off(() => LoginPage());
+      Get.offAll(() => LoginPage());
     }
   }
 

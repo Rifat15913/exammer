@@ -100,7 +100,7 @@ class LoginController extends GetxController {
                   (snapshot.value as int),
                 );
 
-                Get.to(
+                Get.offAll(
                   () => HomeContainerPage(
                     userType: (snapshot.value as int),
                   ),

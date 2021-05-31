@@ -290,6 +290,7 @@ const String keyProfession = "profession";
 const String keyVerificationCode = "verification_code";
 const String keyUserType = "user_type";
 const String keyUserPreferences = "user_preferences";
+const String keyExam = "exam";
 
 // Regular Expression
 const String regularExpressionEmail =
