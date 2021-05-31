@@ -1,6 +1,7 @@
 import 'package:exammer/common.dart';
 import 'package:exammer/constants.dart';
 import 'package:exammer/ui/profile/view/view_profile_controller.dart';
+import 'package:exammer/util/helper/text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -69,7 +70,11 @@ class ViewProfilePage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     child: Image.network(
-                      "${FirebaseAuth.instance.currentUser!.photoURL}",
+                      TextUtil.isNotEmpty(
+                        FirebaseAuth.instance.currentUser!.photoURL,
+                      )
+                          ? FirebaseAuth.instance.currentUser!.photoURL!
+                          : "https://www.vhv.rs/dpng/d/279-2798630_avatar-generic-avatar-hd-png-download.png",
                       fit: BoxFit.cover,
                       height: 80,
                       width: 80,

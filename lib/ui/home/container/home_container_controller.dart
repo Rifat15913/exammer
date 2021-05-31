@@ -1,6 +1,6 @@
 import 'package:exammer/constants.dart';
-import 'package:exammer/ui/home/content/home_content.dart';
 import 'package:exammer/ui/profile/view/view_profile.dart';
+import 'package:exammer/ui/quiz/list/quiz_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,7 @@ class HomeContainerController extends GetxController {
 
   @override
   void onInit() {
-    body = HomeContentPage();
+    body = QuizListPage();
     selectedBottomBarIndex = 0;
     appBarTitle = "Exam List";
 
@@ -29,7 +29,7 @@ class HomeContainerController extends GetxController {
     switch (index) {
       case 0:
         appBarTitle = "Exam List";
-        body = HomeContentPage();
+        body = QuizListPage();
         break;
 
       case 1:
@@ -39,7 +39,7 @@ class HomeContainerController extends GetxController {
 
       default:
         appBarTitle = defaultString;
-        body = HomeContentPage();
+        body = QuizListPage();
         break;
     }
 
