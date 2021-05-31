@@ -85,6 +85,8 @@ class Messages extends Translations {
               "Please check your email to reset password",
           "reset_password_subtitle": "Provide your email address",
           "reset_password_title": "Reset Password",
+          "quiz": "Quiz",
+          "profile": "Profile",
         },
       };
 }

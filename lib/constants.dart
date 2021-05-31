@@ -121,7 +121,7 @@ const TextStyle textStyleSmallestBody = const TextStyle(
 
 const TextStyle textStyleAppBar = const TextStyle(
   color: colorTextRegular,
-  fontSize: 16.0,
+  fontSize: 20.0,
   fontFamily: "Poppins",
   fontWeight: FontWeight.w600,
 );
